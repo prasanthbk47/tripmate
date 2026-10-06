@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101827" />
+  <title>TripMate — Trip Assistance</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="TripMate home">
+        <span class="brand-mark"><i data-lucide="compass"></i></span>
+        <span>trip<span class="brand-accent">mate</span><small>TRAVEL TOGETHER</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-menu">
+        <button class="nav-item active" data-view="home"><i data-lucide="layout-dashboard"></i> Dashboard</button>
+        <button class="nav-item" data-view="trips"><i data-lucide="map"></i> My trips</button>
+        <button class="nav-item" data-view="vault"><i data-lucide="wallet"></i> Budget vault</button>
+        <button class="nav-item" data-view="itinerary"><i data-lucide="calendar-days"></i> Itinerary</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-tip"><i data-lucide="sparkles"></i><strong>Travel smarter</strong><p>Keep the whole group on the same page, from planning to the last rupee.</p></div>
+        <div class="profile"><div class="avatar">TM</div><div><strong>Trip traveller</strong><small>Personal workspace</small></div></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark"><i data-lucide="compass"></i></span> TripMate</div>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageCrumb">Dashboard</strong></div>
+        <div class="topbar-actions"><span class="local-badge"><span></span> Your trips, organized</span><button class="icon-btn" id="topNewTrip" title="Start a new trip"><i data-lucide="plus"></i></button></div>
+      </header>
+
+      <section class="view active" id="view-home">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR NEXT ADVENTURE STARTS HERE</div>
+            <h1>Make memories.<br/><span>Not budget worries.</span></h1>
+            <p>Plan together, track every expense, and keep your entire trip in one place.</p>
+            <button class="btn btn-primary" id="heroNewTrip"><i data-lucide="plus"></i> Start a new trip</button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="sun"></div><div class="mountain mountain-back"></div><div class="mountain mountain-front"></div>
+            <div class="route-line"></div><div class="route-pin pin-one"><i data-lucide="map-pin"></i></div><div class="route-pin pin-two"><i data-lucide="map-pin"></i></div>
+            <div class="art-caption"><i data-lucide="navigation"></i><span>Take the scenic route</span></div>
+          </div>
+        </div>
+
+        <div class="section-heading"><div><p class="eyebrow muted">YOUR OVERVIEW</p><h2>Trip dashboard</h2></div><button class="btn btn-secondary" data-goto="trips">View all trips <i data-lucide="arrow-up-right"></i></button></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-icon purple"><i data-lucide="map"></i></div><span>Total trips</span><strong id="statTrips">0</strong><small>Saved in your account</small></article>
+          <article class="stat-card"><div class="stat-icon green"><i data-lucide="wallet"></i></div><span>Active trip balance</span><strong id="statBalance">₹0</strong><small>Remaining budget</small></article>
+          <article class="stat-card"><div class="stat-icon orange"><i data-lucide="receipt"></i></div><span>Total recorded spend</span><strong id="statSpent">₹0</strong><small>Across all trips</small></article>
+        </div>
+
+        <div class="section-heading trips-heading"><div><p class="eyebrow muted">PICK UP WHERE YOU LEFT OFF</p><h2>Recent trips</h2></div><span class="count-pill" id="recentCount">0 trips</span></div>
+        <div id="recentTrips" class="trip-grid"></div>
+        <div class="empty-state" id="homeEmpty"><div class="empty-icon"><i data-lucide="backpack"></i></div><h3>Your next story starts here</h3><p>Create a trip to organize your travellers, places, budget and shared expenses.</p><button class="btn btn-primary" data-new-trip><i data-lucide="plus"></i> Create your first trip</button></div>
+      </section>
+
+      <section class="view" id="view-trips">
+        <div class="page-heading"><div><p class="eyebrow muted">ALL YOUR ADVENTURES</p><h1>My trips</h1><p>Keep past memories and upcoming plans together.</p></div><button class="btn btn-primary" data-new-trip><i data-lucide="plus"></i> New trip</button></div>
+        <div class="filter-row"><div class="search-box"><i data-lucide="search"></i><input id="tripSearch" type="search" placeholder="Search trips or destinations..." /></div><select id="tripFilter" aria-label="Filter trips"><option value="all">All trips</option><option value="active">Active</option><option value="planned">Planned</option><option value="completed">Completed</option></select></div>
+        <div id="allTrips" class="trip-grid"></div>
+        <div class="empty-state" id="tripsEmpty"><div class="empty-icon"><i data-lucide="map"></i></div><h3>No trips found</h3><p>Create a trip or try another search.</p><button class="btn btn-primary" data-new-trip>Start a trip</button></div>
+      </section>
+
+      <section class="view" id="view-vault">
+        <div class="page-heading"><div><p class="eyebrow muted">EVERY RUPEE ACCOUNTED FOR</p><h1>Budget vault</h1><p>Track the budget, log expenses and know exactly what remains.</p></div><button class="btn btn-primary" id="vaultAddExpense"><i data-lucide="plus"></i> Add expense</button></div>
+        <div id="vaultNoTrip" class="empty-state"><div class="empty-icon"><i data-lucide="wallet"></i></div><h3>Choose or create a trip</h3><p>Your budget vault is created with each trip.</p><button class="btn btn-primary" data-new-trip>Create a trip</button></div>
+        <div id="vaultContent" hidden>
+          <div class="trip-select-row"><label for="vaultTripSelect">Viewing vault for</label><select id="vaultTripSelect"></select><span class="live-tag"><span></span> Balance updates automatically</span></div>
+          <div class="vault-hero">
+            <div class="vault-top"><div><span class="vault-label">REMAINING TRIP BUDGET</span><div class="vault-balance" id="vaultBalance">₹0</div><p id="vaultTripName">Trip name</p></div><div class="vault-wallet"><i data-lucide="wallet"></i></div></div>
+            <div class="budget-track"><div id="budgetProgress"></div></div>
+            <div class="budget-track-labels"><span id="budgetSpentLabel">₹0 spent</span><span id="budgetPercent">0% used</span><span id="budgetTotalLabel">of ₹0</span></div>
+          </div>
+          <div class="stats-grid vault-stats">
+            <article class="stat-card"><div class="stat-icon green"><i data-lucide="piggy-bank"></i></div><span>Original budget</span><strong id="vaultOriginal">₹0</strong><small>Set when trip was created</small></article>
+            <article class="stat-card"><div class="stat-icon orange"><i data-lucide="trending-down"></i></div><span>Total spent</span><strong id="vaultSpent">₹0</strong><small>All recorded expenses</small></article>
+            <article class="stat-card"><div class="stat-icon purple"><i data-lucide="users"></i></div><span>Group members</span><strong id="vaultMembers">0</strong><small>Sharing this trip</small></article>
+          </div>
+          <div class="section-heading"><div><p class="eyebrow muted">THE MONEY TRAIL</p><h2>Expense ledger</h2></div><div class="filter-row compact"><select id="expenseCategoryFilter" aria-label="Filter expense category"><option value="all">All categories</option><option>Food</option><option>Fuel</option><option>Stay</option><option>Transport</option><option>Tickets</option><option>Shopping</option><option>Other</option></select></div></div>
+          <div class="ledger-card"><div class="ledger-header"><span>EXPENSE / PURPOSE</span><span>ADDED BY</span><span>DATE</span><span>AMOUNT</span><span></span></div><div id="expenseList"></div><div class="ledger-empty" id="expenseEmpty">No expenses yet. Add your first expense to update the vault.</div></div>
+          <p class="note-line"><i data-lucide="shield-check"></i> Expense entries are saved with the trip on this device. Connect a shared database for cross-device live updates.</p>
+        </div>
+      </section>
+
+      <section class="view" id="view-itinerary">
+        <div class="page-heading"><div><p class="eyebrow muted">MAKE EVERY DAY COUNT</p><h1>Trip itinerary</h1><p>Your destinations and plans, organized in one timeline.</p></div><button class="btn btn-primary" id="addPlaceBtn"><i data-lucide="plus"></i> Add place</button></div>
+        <div id="itineraryNoTrip" class="empty-state"><div class="empty-icon"><i data-lucide="calendar-days"></i></div><h3>Your itinerary awaits</h3><p>Create a trip and add the places you want to visit.</p><button class="btn btn-primary" data-new-trip>Create a trip</button></div>
+        <div id="itineraryContent" hidden><div class="trip-select-row"><label for="itineraryTripSelect">Planning for</label><select id="itineraryTripSelect"></select></div><div id="itinerarySummary" class="itinerary-summary"></div><div id="placeList" class="place-list"></div><div id="placeEmpty" class="empty-state small-empty"><h3>No places added yet</h3><p>Add destinations to build your travel plan.</p></div></div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav">
+    <button class="nav-item active" data-view="home"><i data-lucide="layout-dashboard"></i><span>Home</span></button>
+    <button class="nav-item" data-view="trips"><i data-lucide="map"></i><span>Trips</span></button>
+    <button class="nav-item" data-view="vault"><i data-lucide="wallet"></i><span>Vault</span></button>
+    <button class="nav-item" data-view="itinerary"><i data-lucide="calendar-days"></i><span>Plan</span></button>
+  </nav>
+
+  <dialog id="tripDialog" class="modal">
+    <form id="tripForm" class="modal-card">
+      <div class="modal-heading"><div><p class="eyebrow muted">LET'S GET GOING</p><h2>Plan a new trip</h2><p>Set up the basics. You can update the plan later.</p></div><button type="button" class="icon-btn close-dialog" aria-label="Close"><i data-lucide="x"></i></button></div>
+      <div class="form-grid">
+        <label class="field full">Trip name<input id="tripName" required maxlength="70" placeholder="e.g. Deccan Drift" /></label>
+        <label class="field">Start date<input id="tripStart" type="date" required /></label>
+        <label class="field">End date<input id="tripEnd" type="date" required /></label>
+        <label class="field">Number of travellers<input id="memberCount" type="number" min="1" max="30" value="2" required /></label>
+        <label class="field">Travel mode<select id="travelMode" required><option value="Car">Car</option><option value="Bike">Bike</option><option value="Bus">Bus</option><option value="Train">Train</option><option value="Flight">Flight</option><option value="Other">Other</option></select></label>
+        <label class="field full">Total trip budget (₹)<input id="tripBudget" type="number" min="0.01" step="0.01" required placeholder="20000" /></label>
+        <div class="field full"><div class="field-label-row"><span>Traveller names</span><small>Enter each group member</small></div><div id="memberFields" class="member-fields"></div></div>
+        <label class="field full">Places to visit <small>(comma-separated)</small><textarea id="tripPlaces" rows="2" placeholder="Pune, Lonavala, Mumbai"></textarea></label>
+      </div>
+      <p class="form-error" id="tripFormError" role="alert"></p>
+      <div class="modal-actions"><button type="button" class="btn btn-secondary close-dialog">Cancel</button><button type="submit" class="btn btn-primary"><i data-lucide="check"></i> Create trip</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="expenseDialog" class="modal">
+    <form id="expenseForm" class="modal-card narrow">
+      <div class="modal-heading"><div><p class="eyebrow muted">UPDATE THE VAULT</p><h2>Add an expense</h2><p>The amount will be deducted from the trip balance.</p></div><button type="button" class="icon-btn close-dialog" aria-label="Close"><i data-lucide="x"></i></button></div>
+      <label class="field">Trip<select id="expenseTrip" required></select></label>
+      <label class="field">Amount spent (₹)<input id="expenseAmount" type="number" min="0.01" step="0.01" required placeholder="1000" /></label>
+      <label class="field">Purpose<input id="expensePurpose" required maxlength="100" placeholder="Dinner, petrol, hotel..." /></label>
+      <div class="form-grid two-col">
+        <label class="field">Category<select id="expenseCategory"><option>Food</option><option>Fuel</option><option>Stay</option><option>Transport</option><option>Tickets</option><option>Shopping</option><option>Other</option></select></label>
+        <label class="field">Added by<select id="expenseMember" required></select></label>
+      </div>
+      <label class="field">Notes (optional)<textarea id="expenseNotes" rows="2" placeholder="Any extra details..."></textarea></label>
+      <p class="form-error" id="expenseFormError" role="alert"></p>
+      <div class="modal-actions"><button type="button" class="btn btn-secondary close-dialog">Cancel</button><button type="submit" class="btn btn-primary"><i data-lucide="plus"></i> Save expense</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="placeDialog" class="modal">
+    <form id="placeForm" class="modal-card narrow">
+      <div class="modal-heading"><div><p class="eyebrow muted">ADD TO THE ROUTE</p><h2>Add a destination</h2></div><button type="button" class="icon-btn close-dialog" aria-label="Close"><i data-lucide="x"></i></button></div>
+      <label class="field">Trip<select id="placeTrip" required></select></label>
+      <label class="field">Place name<input id="placeName" required maxlength="100" placeholder="e.g. Aga Khan Palace" /></label>
+      <label class="field">Day number<input id="placeDay" type="number" min="1" value="1" required /></label>
+      <label class="field">Plan / notes<textarea id="placeNotes" rows="3" placeholder="Things to see, booking reminders..."></textarea></label>
+      <p class="form-error" id="placeFormError" role="alert"></p>
+      <div class="modal-actions"><button type="button" class="btn btn-secondary close-dialog">Cancel</button><button type="submit" class="btn btn-primary">Add place</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
